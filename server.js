@@ -1,8 +1,22 @@
 // // inquirer for user prompts
-
+const inquirer = require("inquirer");
+const mysql = require("mysql2");
 // name the Server ?
 // connect to mysql2
 
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3301,
+  user: "root",
+  password: "rootroot",
+  database: "employeetracker_db",
+});
+
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("Connected to the database");
+  start();
+});
 // initial choices:
 // view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
