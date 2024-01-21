@@ -6,7 +6,7 @@ const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
   host: "localhost",
-  port: 3301,
+  port: 3306,
   user: "root",
   password: "rootroot",
   database: "employeetracker_db",
@@ -17,6 +17,77 @@ connection.connect((err) => {
   console.log("Connected to the database");
   start();
 });
+
+function start() {
+  inquirer
+    .prompt({
+      type: "list",
+      name: "start",
+      message: "What would you like to do?",
+      choices: [
+        "View all departments",
+        "View all roles",
+        "View all employees",
+        "Add an department",
+        "Add a role",
+        "Add an employee",
+        "Update an employee role",
+        "Exit",
+      ],
+    })
+    .then((answer) => {
+      switch (answer.start) {
+        case "View all departments":
+          viewDepartments();
+          break;
+        case "View all roles":
+          viewRoles();
+          break;
+        case "View all employees":
+          viewEmployees();
+          break;
+        case "Add an department":
+          addDepartment();
+          break;
+        case "Add a role":
+          addRole();
+          break;
+        case "Add an employee":
+          addEmployee();
+          break;
+        case "Update an employee role":
+          updateEmployeeRole();
+          break;
+        case "Exit":
+          connection.end();
+          break;
+      }
+    });
+}
+//function to view all departments
+function viewDepartments() {
+  connection.query("SELECT * FROM departments", (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
+//function to view all roles
+function viewRoles() {
+  connection.query("SELECT * FROM roles", (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
+//function to view all employees
+function viewEmployees() {
+  connection.query("SELECT * FROM employees", (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
 // initial choices:
 // view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
